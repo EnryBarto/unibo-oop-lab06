@@ -85,8 +85,7 @@ public final class SocialNetworkUserImpl<U extends User> extends UserImpl implem
         if (!this.following.containsKey(circle)) {
             this.following.put(circle, new HashSet<U>());
         }
-        this.following.get(circle).add(user);
-        return false;
+        return this.following.get(circle).add(user);
     }
 
     /**
