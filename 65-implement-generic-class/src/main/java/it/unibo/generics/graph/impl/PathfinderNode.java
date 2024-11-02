@@ -6,7 +6,7 @@ public class PathfinderNode<T> {
     private Integer distance;
     private T parent;
 
-    public PathfinderNode(T node) {
+    public PathfinderNode(final T node) {
         this.node = node;
         this.distance = null;
         this.parent = null;
@@ -24,11 +24,11 @@ public class PathfinderNode<T> {
         return parent;
     }
 
-    public void setDistance(Integer distance) {
+    public void setDistance(final Integer distance) {
         this.distance = distance;
     }
 
-    public void setParent(T parent) {
+    public void setParent(final T parent) {
         this.parent = parent;
     }
 

@@ -11,10 +11,10 @@ import java.util.LinkedList;
 public class BellmanFord<N> implements Pathfinder<N> {
     private final static int EDGE_WEIGHT = 1; // We consider that the graph is unweighted
 
-    private Map<N, Set<N>> adjacencyMap;
-    private Map<N, PathfinderNode<N>> nodesAttributes;
+    private final Map<N, Set<N>> adjacencyMap;
+    private final Map<N, PathfinderNode<N>> nodesAttributes;
 
-    public BellmanFord(Map<N, Set<N>> adjacencyMap) {
+    public BellmanFord(final Map<N, Set<N>> adjacencyMap) {
 
         if (adjacencyMap == null) {
             throw new IllegalArgumentException(new NullPointerException());
@@ -36,7 +36,7 @@ public class BellmanFord<N> implements Pathfinder<N> {
     }
 
     @Override
-    public List<N> calculatePath(N source, N dest) {
+    public List<N> calculatePath(final N source, final N dest) {
         if (!this.adjacencyMap.containsKey(source) || !this.adjacencyMap.containsKey(dest)) {
             throw new IllegalArgumentException("The source and / or the destination node don't exist!");
         }
@@ -55,7 +55,7 @@ public class BellmanFord<N> implements Pathfinder<N> {
         }
 
         // Calculate the path using the attributes of the relaxed nodes
-        List<N> path = new LinkedList<N>();
+        final List<N> path = new LinkedList<N>();
 
         N node = dest;
         do {
@@ -67,7 +67,7 @@ public class BellmanFord<N> implements Pathfinder<N> {
     }
 
     // Initialize all the nodes' attributes
-    private void initializeSingleSource(N source) {
+    private void initializeSingleSource(final N source) {
         for (PathfinderNode<N> node: this.nodesAttributes.values()) {
             node.setDistance(null);
             node.setParent(null);
@@ -79,9 +79,9 @@ public class BellmanFord<N> implements Pathfinder<N> {
     }
 
     // Relax an edge betwen two nodes
-    private void relax(N source, N dest) {
-        PathfinderNode<N> src = this.nodesAttributes.get(source);
-        PathfinderNode<N> dst = this.nodesAttributes.get(dest);
+    private void relax(final N source, final N dest) {
+        final PathfinderNode<N> src = this.nodesAttributes.get(source);
+        final PathfinderNode<N> dst = this.nodesAttributes.get(dest);
 
         // If the source node doesn't have a distance yet, we can't relax the edge
         if (src.getDistance() == null) {
@@ -94,6 +94,4 @@ public class BellmanFord<N> implements Pathfinder<N> {
             dst.setParent(source);
         }
     }
-
-
 }
