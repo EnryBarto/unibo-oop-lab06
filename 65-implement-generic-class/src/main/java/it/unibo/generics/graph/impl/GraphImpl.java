@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import it.unibo.generics.graph.api.Graph;
+import it.unibo.generics.graph.api.Pathfinder;
 
 public class GraphImpl<N> implements Graph<N> {
     // Stores all the edges from one node (the key of the map) to all the other nodes which is connected to
@@ -38,7 +39,7 @@ public class GraphImpl<N> implements Graph<N> {
 
     // Calculate the path to reach a target node from a source node
     public List<N> getPath(N source, N target) {
-        PathfinderImpl<N> pathFinder = new PathfinderImpl<>(adjacencyMap);
-        return pathFinder.bellmanFord(source, target);
+        Pathfinder<N> pathFinder = new BellmanFord<>(adjacencyMap);
+        return pathFinder.calculatePath(source, target);
     }
 }

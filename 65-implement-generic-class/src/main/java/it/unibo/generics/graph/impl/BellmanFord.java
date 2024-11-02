@@ -1,5 +1,6 @@
 package it.unibo.generics.graph.impl;
 
+import it.unibo.generics.graph.api.Pathfinder;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,46 +8,47 @@ import java.util.Set;
 import java.util.List;
 import java.util.LinkedList;
 
-public class PathfinderImpl<N> {
+public class BellmanFord<N> implements Pathfinder<N> {
     private final static int EDGE_WEIGHT = 1; // We consider that the graph is unweighted
 
-    private Map<N, Set<N>> graph;
+    private Map<N, Set<N>> adjacencyMap;
     private Map<N, PathfinderNode<N>> nodesAttributes;
 
-    public PathfinderImpl(Map<N, Set<N>> graph) {
+    public BellmanFord(Map<N, Set<N>> adjacencyMap) {
 
-        if (graph == null) {
-            throw new IllegalArgumentException();
+        if (adjacencyMap == null) {
+            throw new IllegalArgumentException(new NullPointerException());
         }
 
-        this.graph = new HashMap<>();
+        this.adjacencyMap = new HashMap<>();
         this.nodesAttributes = new HashMap<>();
 
         // Copy the adjacency map and initialize the nodes' attributes
-        for (N node: graph.keySet()) {
-            this.graph.put(node, new HashSet<>());
+        for (N node: adjacencyMap.keySet()) {
+            this.adjacencyMap.put(node, new HashSet<>());
 
-            for (N adjacentNode: graph.get(node)) {
-                this.graph.get(node).add(adjacentNode);
+            for (N adjacentNode: adjacencyMap.get(node)) {
+                this.adjacencyMap.get(node).add(adjacentNode);
             }
 
             this.nodesAttributes.put(node, new PathfinderNode<N>(node));
         }
     }
 
-    public List<N> bellmanFord(N source, N dest) {
-        if (!this.graph.containsKey(source) || !this.graph.containsKey(dest)) {
-            throw new IllegalArgumentException();
+    @Override
+    public List<N> calculatePath(N source, N dest) {
+        if (!this.adjacencyMap.containsKey(source) || !this.adjacencyMap.containsKey(dest)) {
+            throw new IllegalArgumentException("The source and / or the destination node don't exist!");
         }
 
         // Initialize the nodes' attributes
         this.initializeSingleSource(source);
 
         // Relax all the edges in the adjacency map
-        for (int i = 0; i < this.graph.size() - 1; i++) {
+        for (int i = 0; i < this.adjacencyMap.size() - 1; i++) {
 
-            for (N src: this.graph.keySet()) {
-                for (N dst: this.graph.get(src)) {
+            for (N src: this.adjacencyMap.keySet()) {
+                for (N dst: this.adjacencyMap.get(src)) {
                     this.relax(src, dst);
                 }
             }
